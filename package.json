@@ -1,8 +1,20 @@
 {
-  "name": "client",
-  "private": true,
+  "name": "bug-tracker-client",
   "version": "0.0.0",
+  "private": true,
+  "description": "Frontend for bug tracker app",
+  "homepage": "https://github.com/jragland3/bug-tracker-client#readme",
+  "bugs": {
+    "url": "https://github.com/jragland3/bug-tracker-client/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jragland3/bug-tracker-client.git"
+  },
+  "license": "ISC",
+  "author": "Josh Ragland",
   "type": "module",
+  "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
