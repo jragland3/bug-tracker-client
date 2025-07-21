@@ -27,3 +27,4 @@ test('submits form with title and description', () => {
     description: 'Bug description',
   });
 });
+
