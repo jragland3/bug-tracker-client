@@ -1,0 +1,23 @@
+.report-bug-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, sans-serif;
+}
+
+.report-bug-page h2 {
+  margin-top: 2rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form input[type="text"],
+form textarea {
+  padding: 0.5rem;
+  font-size:

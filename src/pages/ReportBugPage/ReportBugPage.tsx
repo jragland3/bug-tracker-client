@@ -1,5 +1,6 @@
 import React from "react";
 import BugForm from "../../components/BugForm/BugForm";
+import './ReportBugPage.css';
 
 // Define the shape of a bug item
 interface Bug {
@@ -58,7 +59,7 @@ const ReportBugPage: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className="report-bug-page">
       {/* Render the bug submission form */}
       <BugForm onSubmit={handleNewBug} />
 
