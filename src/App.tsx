@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import ReportBugPage from './pages/ReportBugPage';
+import ReportBugPage from './pages/ReportBugPage/ReportBugPage';
 
 function App() {
   return (
