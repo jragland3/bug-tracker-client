@@ -2,9 +2,9 @@ name: Run Vitest on All Branches
 
 on:
     push:
-        branches: [ "**" ]
+        branches: [ main ]
     pull_request:
-        branches: [ "**" ]
+        branches: [ main ]
 
 jobs:
     test:
