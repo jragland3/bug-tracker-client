@@ -1,3 +1,8 @@
+# Bug Tracker App
+<p>This is a project meant to demonstrate full stack development skills as well as concepts such as testing (Unit, Component, Integration, E2E, etc.), containerization, etc.
+
+NOTE: This project is a work-in-progress
+
 ## Frontend:  React + TypeScript + Vite
 Directory: `client`
 Uses:
