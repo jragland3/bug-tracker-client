@@ -1,4 +1,20 @@
-# React + TypeScript + Vite
+## Frontend:  React + TypeScript + Vite
+Directory: `client`
+Uses:
+- Node
+- React + Vite
+- TypeScript
+- Vitest + React Testing Library for testing
+
+### Starting server
+#### Dev mode
+- Run using `npm run dev`
+
+#### Vitetest + RTL (React Testing Library)
+- Run vite tests:
+  - `npx vitest run`
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
