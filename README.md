@@ -68,4 +68,3 @@ export default tseslint.config({
   },
 })
 ```
-# bug-tracker-client
