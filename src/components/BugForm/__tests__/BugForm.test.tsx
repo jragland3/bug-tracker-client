@@ -1,8 +1,6 @@
-/// <reference types="vitest" />
-
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import BugForm from '../BugForm';
-import { vi } from 'vitest';
 
 
 test('submits form with title and description', () => {
