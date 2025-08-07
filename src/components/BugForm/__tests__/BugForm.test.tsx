@@ -1,8 +1,6 @@
-/// <reference types="vitest" />
-
+import { expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import BugForm from '../BugForm';
-import { vi } from 'vitest';
 
 
 test('submits form with title and description', () => {
@@ -20,7 +18,7 @@ test('submits form with title and description', () => {
     target: { value: 'Bug description' }
   });
 
-  fireEvent.click(screen.getByRole('button', { name: /submit/i  }));
+  fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
   expect(mockSubmit).toHaveBeenCalledWith({
     title: 'Bug title',
