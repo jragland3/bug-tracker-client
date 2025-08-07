@@ -18,6 +18,8 @@ export default function BugForm({ onSubmit }: BugFormProps) {
     setDescription('');
   };
 
+  const test = 'this is a test';
+  console.log(test);
   return (
     <form onSubmit={handleSubmit}>
       <h2>Report a Bug</h2>

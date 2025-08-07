@@ -18,7 +18,7 @@ test('submits form with title and description', () => {
     target: { value: 'Bug description' }
   });
 
-  fireEvent.click(screen.getByRole('button', { name: /submit/i  }));
+  fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
   expect(mockSubmit).toHaveBeenCalledWith({
     title: 'Bug title',

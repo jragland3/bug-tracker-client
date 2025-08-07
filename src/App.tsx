@@ -8,7 +8,7 @@ function App() {
       <Route path="/" element={<HomePage />}/>
       <Route path="/report-bug" element={<ReportBugPage />} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

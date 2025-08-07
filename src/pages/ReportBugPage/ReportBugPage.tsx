@@ -1,5 +1,5 @@
-import React from "react";
-import BugForm from "../../components/BugForm/BugForm";
+import React from 'react';
+import BugForm from '../../components/BugForm/BugForm';
 import './ReportBugPage.css';
 
 // Define the shape of a bug item
@@ -15,18 +15,18 @@ const ReportBugPage: React.FC = () => {
   const [bugs, setBugs] = React.useState<Bug[]>([]);
 
   // Fetch all bugs from the backend API
-  const fetchBugs = async () => {
+  const fetchBugs = async() => {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/bugs`);
       const data = await res.json();
       setBugs(data); // Update state with fetched bugs
     } catch (err) {
-      console.error("Failed to fetch bugs:", err);
+      console.error('Failed to fetch bugs:', err);
     }
   };
 
   // Handle form submission by posting a new bug
-  const handleNewBug = async (bug: { title: string; description: string }) => {
+  const handleNewBug = async(bug: { title: string; description: string }) => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/bugs`, {
         method: 'POST',
@@ -36,12 +36,12 @@ const ReportBugPage: React.FC = () => {
 
       fetchBugs(); // Refresh the bug list after submitting
     } catch (err) {
-      console.error("Failed to submit bug:", err);
+      console.error('Failed to submit bug:', err);
     }
   };
 
   // Handle bug deletion
-  const handleDelete = async (id: number) => {
+  const handleDelete = async(id: number) => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/bugs/${id}`, {
         method: 'DELETE',
@@ -49,7 +49,7 @@ const ReportBugPage: React.FC = () => {
 
       fetchBugs(); // Refresh the bug list after deletion
     } catch (err) {
-      console.error("Failed to delete bug:", err);
+      console.error('Failed to delete bug:', err);
     }
   };
 
