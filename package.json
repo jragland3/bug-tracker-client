@@ -1,6 +1,6 @@
 {
   "name": "bug-tracker-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "Frontend for bug tracker app",
   "homepage": "https://github.com/jragland3/bug-tracker-client#readme",
@@ -29,6 +29,7 @@
     "react-router-dom": "^7.7.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.9.2",
     "@eslint/js": "^9.32.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
