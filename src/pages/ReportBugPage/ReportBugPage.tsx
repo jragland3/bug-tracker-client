@@ -17,9 +17,9 @@ const ReportBugPage: React.FC = () => {
   // Fetch all bugs from the backend API
   const fetchBugs = async() => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/bugs`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/bugs.getBugs`);
       const data = await res.json();
-      setBugs(data); // Update state with fetched bugs
+      setBugs(data?.result?.data ?? []); // Update state with fetched bugs
     } catch (err) {
       console.error('Failed to fetch bugs:', err);
     }
@@ -28,7 +28,7 @@ const ReportBugPage: React.FC = () => {
   // Handle form submission by posting a new bug
   const handleNewBug = async(bug: { title: string; description: string }) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/bugs`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/bugs.createBug`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...bug, status: 'open' }),
@@ -43,10 +43,20 @@ const ReportBugPage: React.FC = () => {
   // Handle bug deletion
   const handleDelete = async(id: number) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/bugs/${id}`, {
-        method: 'DELETE',
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/bugs.deleteBug`, {
+        method: 'POST',
+        headers:  { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
       });
 
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Delete failed: ${res.status} ${res.statusText} - ${text}`)
+      }
+
+      const json = await res.json();
+      console.log('Delete response:', json);
+      
       fetchBugs(); // Refresh the bug list after deletion
     } catch (err) {
       console.error('Failed to delete bug:', err);
