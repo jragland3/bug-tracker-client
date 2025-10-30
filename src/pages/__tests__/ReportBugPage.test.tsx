@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import ReportBugPage from '../ReportBugPage/ReportBugPage';
-import userEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { MemoryRouter } from 'react-router-dom';
 const mockBugs = [
   { id: 1, title: 'Bug 1', description: 'First bug', status: 'open' },
   { id: 2, title: 'Bug 2', description: 'Second bug', status: 'closed' }
-]
+];
 
 describe('ReportBugPage', () => {
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe('ReportBugPage', () => {
   // ---------------
   // Tests
   // ---------------
-  it('renders bug list', async () => {
+  it('renders bug list', async() => {
     render(
       <MemoryRouter>
         <ReportBugPage />
@@ -62,7 +62,7 @@ describe('ReportBugPage', () => {
   });
   
 
-  it('submits a new bug', async () => {
+  it('submits a new bug', async() => {
     render(<ReportBugPage />);
     const user = userEvent.setup();
 
@@ -85,7 +85,7 @@ describe('ReportBugPage', () => {
   });
   
 
-  it('deletes a previously submitted bug', async () => {
+  it('deletes a previously submitted bug', async() => {
     render(<ReportBugPage />);
     const user = userEvent.setup();
 

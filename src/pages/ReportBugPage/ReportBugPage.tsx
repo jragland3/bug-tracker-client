@@ -51,7 +51,7 @@ const ReportBugPage: React.FC = () => {
 
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(`Delete failed: ${res.status} ${res.statusText} - ${text}`)
+        throw new Error(`Delete failed: ${res.status} ${res.statusText} - ${text}`);
       }
 
       const json = await res.json();
