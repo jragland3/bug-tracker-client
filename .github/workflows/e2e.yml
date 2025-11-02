@@ -33,22 +33,22 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies (backend)
-        working-directory: ./backend
+        working-directory: backend
         run: npm install
 
       - name: Install dependencies (frontend)
-        working-directory: ./frontend
+        working-directory: frontend
         run: npm install
 
       - name: Prepare test database
-        working-directory: ./backend
+        working-directory: backend
         run: |
           # Create/reset test database
           cp prisma/dev.db prisma/test.db || true
           npx prisma migrate reset --force --skip-seed
 
       - name: Start backend server
-        working-directory: ./backend
+        working-directory: backend
         run: |
           npm run start:e2e &
           BACKEND_PID=$!
