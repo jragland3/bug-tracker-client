@@ -43,8 +43,9 @@ jobs:
 
       - name: Prepare test database
         working-directory: ./backend
+        env:
+          DATABASE_URL: 'file:./prisma/test.db'
         run: |
-          # Create/reset test database
           cp prisma/dev.db prisma/test.db || true
           npx prisma migrate reset --force --skip-seed
 
