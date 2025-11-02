@@ -52,7 +52,7 @@ jobs:
       - name: Install Bun
         run: |
           curl -fsSL https://bun.sh/install | bash
-          source $HOME/.bun/env
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
