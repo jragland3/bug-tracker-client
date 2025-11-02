@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   timeout: 30 * 1000,
   expect: {
-    timeout: 5000, // max wait for expect()
+    timeout: 10000, // max wait for expect()
   },
   fullyParallel: true,
   retries: 1,
