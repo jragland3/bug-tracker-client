@@ -49,6 +49,11 @@ jobs:
           cp prisma/dev.db prisma/test.db || true
           npx prisma migrate reset --force --skip-seed
 
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          export PATH="$HOME/.bun/bin:$PATH"
+
       - name: Start backend server
         working-directory: ./backend
         run: |
