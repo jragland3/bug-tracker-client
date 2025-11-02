@@ -54,6 +54,10 @@ jobs:
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
+      - name: Install browsers
+        working-directory: frontend
+        run: npx playwright install --with-deps
+
       - name: Start backend server
         working-directory: ./backend
         run: |
