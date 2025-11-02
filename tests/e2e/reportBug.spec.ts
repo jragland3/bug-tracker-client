@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Report Bug Page', () => {
-  test.beforeEach(async({ page }) => {
-    // Navigate to the 
+  test.beforeEach(async ({ page }) => {
     await page.goto('/report-bug');
   });
 
-  test('should submit a new bug successfully', async({ page }) => {
+  test('should submit a new bug successfully', async ({ page }) => {
     const bugTitle = `Playwright Test Bug - ${Date.now()}`;
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
 
@@ -19,5 +18,5 @@ test.describe('Report Bug Page', () => {
 
     // Verify that the bug appears in the list
     await expect(page.locator(`text=${bugTitle}`)).toBeVisible();
-  });
-});
+  })
+})
