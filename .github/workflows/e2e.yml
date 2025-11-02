@@ -68,13 +68,13 @@ jobs:
         working-directory: ./frontend
 
       - name: Upload Playwright HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ matrix.browser }}
           path: ./frontend/playwright-report
 
       - name: Upload JUnit results for Github
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: junit-results-${{ matrix.browser }}
           path: ./frontend/results.xml
