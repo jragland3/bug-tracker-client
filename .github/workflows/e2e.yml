@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout frontend repository
         uses: actions/checkout@v3
+        with:
+          path: frontend
 
       - name: Checkout backend repository
         uses: actions/checkout@v3
@@ -33,22 +35,22 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies (backend)
-        working-directory: backend
+        working-directory: ./backend
         run: npm install
 
       - name: Install dependencies (frontend)
-        working-directory: frontend
+        working-directory: ./frontend
         run: npm install
 
       - name: Prepare test database
-        working-directory: backend
+        working-directory: ./backend
         run: |
           # Create/reset test database
           cp prisma/dev.db prisma/test.db || true
           npx prisma migrate reset --force --skip-seed
 
       - name: Start backend server
-        working-directory: backend
+        working-directory: ./backend
         run: |
           npm run start:e2e &
           BACKEND_PID=$!
@@ -58,14 +60,14 @@ jobs:
           NODE_ENV: test
 
       - name: Wait for backend
-        run: npx wait-on http://locahost:3000/trpc/bugs.getBugs
+        run: npx wait-on http://localhost:3000/trpc/bugs.getBugs
       
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
         env:
           NODE_ENV: test
           DATABASE_URL: 'file:./backend/prisma/test.db'
-        working-directory: frontend
+        working-directory: ./frontend
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
