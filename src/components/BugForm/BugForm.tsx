@@ -27,6 +27,7 @@ export default function BugForm({ onSubmit }: BugFormProps) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
+        data-test-id='title-field'
       />
       <br />
       <textarea 
@@ -34,8 +35,9 @@ export default function BugForm({ onSubmit }: BugFormProps) {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
+        data-test-id='description-field'
       />
-      <button type='submit'>Submit</button>
+      <button type='submit' data-test-id='submit-bug-button'>Submit</button>
     </form>
   );
 }

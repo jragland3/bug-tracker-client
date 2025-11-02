@@ -1,0 +1,87 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout frontend repository
+        uses: actions/checkout@v3
+
+      - name: Checkout backend repository
+        uses: actions/checkout@v3
+        with:
+          repository: jragland3/bug-tracker-backend
+          path: backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies (backend)
+        working-directory: ./backend
+        run: npm install
+
+      - name: Install dependencies (frontend)
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Prepare test database
+        working-directory: ./backend
+        run: |
+          # Create/reset test database
+          cp prisma/dev.db prisma/test.db || true
+          npx prisma migrate reset --force --skip-seed
+
+      - name: Start backend server
+        working-directory: ./backend
+        run: |
+          npm run start:e2e &
+          BACKEND_PID=$!
+          echo $BACKEND_PID > backend.pid
+        env:
+          DATABASE_URL: 'file:./prisma/test.db'
+          NODE_ENV: test
+
+      - name: Wait for backend
+        run: npx wait-on http://locahost:3000/trpc/bugs.getBugs
+      
+      - name: Run Playwright tests
+        run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
+        env:
+          NODE_ENV: test
+          DATABASE_URL: 'file:./backend/prisma/test.db'
+        working-directory: ./frontend
+
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: ./frontend/playwright-report
+
+      - name: Upload JUnit results for Github
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-results-${{ matrix.browser }}
+          path: ./frontend/results.xml
+
+      - name: Publish test results to Github
+        uses: dorny/test/reporter@v2
+        with:
+          name: Playwright E2E
+          path: ./frontend/results.xml
+          reporter: junit
