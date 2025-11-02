@@ -16,7 +16,9 @@ test.describe('Report Bug Page', () => {
     // Submit form
     await page.click('[data-test-id="submit-bug-button"]');
 
+    console.log(await page.content());
+
     // Verify that the bug appears in the list
-    await expect(page.locator(`text=${bugTitle}`)).toBeVisible();
+    await expect(page.locator('[data-test-id="bug-title"]', { hasText: bugTitle })).toBeVisible();
   });
 });
