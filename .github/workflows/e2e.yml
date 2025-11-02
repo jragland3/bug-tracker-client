@@ -65,7 +65,7 @@ jobs:
           NODE_ENV: test
 
       - name: Wait for backend
-        run: npx wait-on http://localhost:3000/trpc/bugs.getBugs
+        run: npx wait-on http://localhost:3000/health
       
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
