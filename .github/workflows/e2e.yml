@@ -42,7 +42,9 @@ jobs:
         run: npm install
 
       - name: Install Bun
-        uses: oven-sh/bun@v0.6.15
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
 
       - name: Prepare test database
         working-directory: ./backend
