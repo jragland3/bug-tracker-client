@@ -41,6 +41,12 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
+      - name: Install Bun
+        working-directory: ./frontend
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          export PATH="$HOME/.bun/bin:$PATH"
+
       - name: Prepare test database
         working-directory: ./backend
         env:
@@ -48,11 +54,6 @@ jobs:
         run: |
           npx prisma migrate reset --force
           ls -l prisma/
-
-      - name: Install Bun
-        run: |
-          curl -fsSL https://bun.sh/install | bash
-          export PATH="$HOME/.bun/bin:$PATH"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -75,9 +76,6 @@ jobs:
         env:
           DATABASE_URL: 'file:./prisma/test.db'
           NODE_ENV: test
-
-      - name: Wait for backend
-        run: npx wait-on http://localhost:3000/health
       
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
