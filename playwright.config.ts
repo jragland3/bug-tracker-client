@@ -47,7 +47,10 @@ export default defineConfig({
       command: 'bun run dev', // Frontend start script
       port: 5173,
       reuseExistingServer: !process.env.CI,
-      env: { DATABASE_URL: 'file:./test.db' },
+      env: {
+        VITE_API_URL: 'http://localhost:3000',
+        DATABASE_URL: 'file:./test.db' 
+      },
     }
   ] 
 });
