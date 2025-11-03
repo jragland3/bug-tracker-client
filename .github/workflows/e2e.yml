@@ -53,6 +53,7 @@ jobs:
           cd "$GITHUB_WORKSPACE/backend"
           npx prisma migrate reset --force
           npx prisma db seed
+          ls -l "$GITHUB_WORKSPACE/backend/prisma"
           sqlite3 $DATABASE_URL ".tables"
 
       - name: Debug DATABASE_URL
