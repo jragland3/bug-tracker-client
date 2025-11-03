@@ -69,11 +69,11 @@ jobs:
           DATABASE_URL: file:./prisma/test.db
           NODE_ENV: test
         run: |
-          echo "DATABASE_URL = $DATABASE_URL"
+          echo "DATABASE_URL = $(pwd)/prisma/test.db"
           bunx prisma migrate reset --force
           bunx prisma generate
           
-          DB_PATH=${DATABASE_URL#file:}
+          DB_PATH=$(pwd)/${DATABASE_URL#file:./}
           if [ -f "$DB_PATH" ]; then
             echo "✅ Database file exists at $DB_PATH"
           else
