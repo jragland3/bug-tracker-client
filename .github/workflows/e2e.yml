@@ -53,12 +53,12 @@ jobs:
         run: |
           npx prisma migrate reset --force
           ls -l prisma/
+          echo "Database file location:"
+          echo $DATABASE_URL
+          ls -l prisma/
 
-      - name: Debug backend data
-        working-directory: ./backend
-        run: |
-          echo "Listing bugs from test database:"
-          sqlite3 prisma/test.db "SELECT id, title FROM Bug;"
+          echo "Tables in test.db:"
+          sqlite3 prisma/test.db ".tables"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
