@@ -32,6 +32,14 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
   ],
 
   webServer: [
@@ -40,7 +48,8 @@ export default defineConfig({
       port: 5173,
       reuseExistingServer: !process.env.CI,
       env: {
-        VITE_API_URL: 'http://localhost:3000',
+        VITE_API_URL: 'http://localhost:3000/v1/trpc',
+        DATABASE_URL: 'file:./test.db' 
       },
     }
   ] 

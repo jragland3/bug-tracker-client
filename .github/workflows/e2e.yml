@@ -9,52 +9,43 @@ on:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
-    strategy:
-      matrix:
-        browser: [chromium]
-    timeout-minutes: 20
+    env:
+      NODE_ENV: test
+      DATABASE_URL: file:./test.db
+      VITE_API_URL: http://localhost:3000/v1/trpc
+      APP_URL: http://localhost:5173
+      CI: true
 
     steps:
-      - name: Checkout frontend repository
-        uses: actions/checkout@v3
+      - name: Checkout Frontend Repository
+        uses: actions/checkout@v4
         with:
           path: frontend
 
-      - name: Checkout backend repository
-        uses: actions/checkout@v3
+      - name: Checkout Backend Repository
+        uses: actions/checkout@v4
         with:
           repository: jragland3/bug-tracker-backend
           path: backend
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install dependencies (backend)
-        working-directory: ./backend
-        run: npm install
-
-      - name: Install dependencies (frontend)
-        working-directory: ./frontend
-        run: npm install
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Prepare test database
-        working-directory: ./backend
-        env:
-          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
-        run: |
-          echo "DATABASE_URL = $DATABASE_URL"
-
-          bunx prisma migrate reset --force
-          sqlite3 $DATABASE_URL ".tables"
+      - name: Cache Bun Depencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun
+          key: ${{ runner.os }}-bun=${{hashFiles('frontend/bun.lock', 'backend/bun.lock') }}
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -66,10 +57,25 @@ jobs:
         working-directory: frontend
         run: bunx playwright install --with-deps
 
-      - name: Start backend server
-        working-directory: ./backend
+      # Backend Setup
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: bun install
+
+      - name: Prepare Prisma Database
+        working-directory: backend
         env:
-          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
+          DATABASE_URL: file:./test.db
+          NODE_ENV: test
+        run: |
+          echo "DATABASE_URL = $DATABASE_URL"
+          bunx prisma migrate reset --force
+          sqlite3 $DATABASE_URL ".tables"
+
+      - name: Start backend server
+        working-directory: backend
+        env:
+          DATABASE_URL: file:./test.db
           NODE_ENV: test
         run: |
           bun run start:e2e &
@@ -77,24 +83,32 @@ jobs:
           echo $BACKEND_PID > backend.pid
           sleep 5
           curl -v http://localhost:3000/health
+
+
+      # Frontend Setup
+      - name: Install Frontend Dependencies 
+        working-directory: frontend
+        run: bun install
       
       - name: Run Playwright tests
-        run: bunx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
+        working-directory: frontend
+        run: bunx playwright test --reporter=junit,html
         env:
-          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
+          DATABASE_URL: file:./test.db
+          APP_URL: http://localhost:5173
+          VITE_API_URL: http://localhost:3000/v1/trpc
           NODE_ENV: test
-        working-directory: ./frontend
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ matrix.browser }}
+          name: playwright-report-chromium
           path: ./frontend/playwright-report
 
       - name: Upload JUnit results for Github
         uses: actions/upload-artifact@v4
         with:
-          name: junit-results-${{ matrix.browser }}
+          name: junit-results
           path: ./frontend/results.xml
 
       - name: Publish test results to Github
