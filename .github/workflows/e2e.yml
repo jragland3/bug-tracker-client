@@ -46,6 +46,13 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Debug DATABASE_URL
+        working-directory: ./backend
+        run: |
+          echo "DATABASE_URL = $DATABASE_URL"
+          ls -l $(dirname "$DATABASE_URL")
+          file "$DATABASE_URL"
+
       - name: Prepare test database
         working-directory: ./backend
         env:
@@ -57,6 +64,12 @@ jobs:
 
           echo "Tables in test.db:"
           sqlite3 ${{ github.workspace }}/prisma/test.db ".tables"
+
+      - name: List tables in test.db
+        working-directory: ./backend
+        run: |
+          sqlite3 $(realpath "$DATABASE_URL") ".tables"
+
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
