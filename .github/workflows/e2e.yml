@@ -72,14 +72,10 @@ jobs:
           echo "DATABASE_URL = $DATABASE_URL"
           bunx prisma migrate reset --force
           bunx prisma generate
-
-          # Strip the 'file:' prefix for sqlite3
-          DB_PATH=${DATABASE_URL#file:}
           
-          # Quick indicator: does the file exist and can we list tables?
+          DB_PATH=${DATABASE_URL#file:}
           if [ -f "$DB_PATH" ]; then
             echo "✅ Database file exists at $DB_PATH"
-            sqlite3 "$DB_PATH" ".tables"
           else
             echo "❌ Database file not found at $DB_PATH"
           fi
@@ -93,16 +89,15 @@ jobs:
           bun run start:e2e &
           BACKEND_PID=$!
           echo $BACKEND_PID > backend.pid
-          sleep 5
-          curl -v http://localhost:3000/health
-
-      - name: Backend Check
-        working-directory: backend
-        env:
-          DATABASE_URL: file:./prisma/test.db
-          NODE_ENV: test
-        run: |
-          bun run start: e2e
+          for i in {1..10}; do
+            if curl -s -f http://localhost:3000/health; then
+              echo "Backend ready"
+              break
+            else
+              echo "Waiting for backend..."
+              sleep 2
+            fi
+          done
 
 
       # Frontend Setup
