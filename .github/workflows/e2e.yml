@@ -53,10 +53,10 @@ jobs:
         run: |
           npx prisma migrate reset --force
           npx prisma db seed
-          sqlite3 prisma/test.db ".tables"
+          sqlite3 ${{ github.workspace }}/prisma/test.db ".tables"
 
           echo "Tables in test.db:"
-          sqlite3 prisma/test.db ".tables"
+          sqlite3 ${{ github.workspace }}/prisma/test.db ".tables"
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
