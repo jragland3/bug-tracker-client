@@ -13,7 +13,7 @@ jobs:
 
     env:
       NODE_ENV: test
-      DATABASE_URL: file:./test.db
+      DATABASE_URL: file:./prisma/test.db
       VITE_API_URL: http://localhost:3000/v1/trpc
       APP_URL: http://localhost:5173
       CI: true
@@ -65,7 +65,7 @@ jobs:
       - name: Prepare Prisma Database
         working-directory: backend
         env:
-          DATABASE_URL: file:./test.db
+          DATABASE_URL: file:./prisma/test.db
           NODE_ENV: test
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
@@ -75,7 +75,7 @@ jobs:
       - name: Start backend server
         working-directory: backend
         env:
-          DATABASE_URL: file:./test.db
+          DATABASE_URL: file:./prisma/test.db
           NODE_ENV: test
         run: |
           bun run start:e2e &
@@ -94,7 +94,7 @@ jobs:
         working-directory: frontend
         run: bunx playwright test --reporter=junit,html
         env:
-          DATABASE_URL: file:./test.db
+          DATABASE_URL: file:./prisma/test.db
           APP_URL: http://localhost:5173
           VITE_API_URL: http://localhost:3000/v1/trpc
           NODE_ENV: test
