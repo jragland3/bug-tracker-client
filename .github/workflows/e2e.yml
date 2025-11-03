@@ -70,7 +70,7 @@ jobs:
           NODE_ENV: test
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
-          
+          bunx prisma migrate reset --force
           # Strip the 'file:' prefix for sqlite3
           DB_PATH=${DATABASE_URL#file:}
           
@@ -93,6 +93,14 @@ jobs:
           echo $BACKEND_PID > backend.pid
           sleep 5
           curl -v http://localhost:3000/health
+
+      - name: Backend Check
+        working-directory: backend
+        env:
+          DATABASE_URL: file:./prisma/test.db
+          NODE_ENV: test
+        run: |
+          bun run start: e2e
 
 
       # Frontend Setup
