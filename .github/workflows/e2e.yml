@@ -57,6 +57,7 @@ jobs:
         working-directory: frontend
         run: bunx playwright install --with-deps
 
+
       # Backend Setup
       - name: Install Backend Dependencies
         working-directory: backend
@@ -70,7 +71,7 @@ jobs:
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
           bunx prisma migrate reset --force
-          sqlite3 $DATABASE_URL ".tables"
+          sqlite3 ./prisma/test.db ".tables"
 
       - name: Start backend server
         working-directory: backend
@@ -89,7 +90,9 @@ jobs:
       - name: Install Frontend Dependencies 
         working-directory: frontend
         run: bun install
-      
+
+
+      # Playwright Tests
       - name: Run Playwright tests
         working-directory: frontend
         run: bunx playwright test --reporter=junit,html
@@ -99,6 +102,8 @@ jobs:
           VITE_API_URL: http://localhost:3000/v1/trpc
           NODE_ENV: test
 
+
+      # Reports
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
         with:
