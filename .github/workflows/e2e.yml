@@ -56,18 +56,6 @@ jobs:
           bunx prisma migrate reset --force
           sqlite3 $DATABASE_URL ".tables"
 
-      - name: Debug DATABASE_URL
-        working-directory: ./backend
-        run: |
-          echo "DATABASE_URL = $DATABASE_URL"
-          ls -l $(dirname "$DATABASE_URL")
-          file "$DATABASE_URL"
-
-      - name: List tables in test.db
-        run: |
-          sqlite3 $(realpath "$DATABASE_URL") ".tables"
-
-
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
@@ -80,15 +68,15 @@ jobs:
 
       - name: Start backend server
         working-directory: ./backend
+        env:
+          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
+          NODE_ENV: test
         run: |
           npm run start:e2e &
           BACKEND_PID=$!
           echo $BACKEND_PID > backend.pid
           sleep 5
           curl -v http://localhost:3000/health
-        env:
-          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
-          NODE_ENV: test
       
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
