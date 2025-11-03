@@ -49,14 +49,14 @@ jobs:
       - name: Prepare test database
         working-directory: ./backend
         env:
-          DATABASE_URL: 'file:${{ github.workspace }}/prisma/test.db'
+          DATABASE_URL: 'file:${{ github.workspace }}/backend/prisma/test.db'
         run: |
           npx prisma migrate reset --force
           npx prisma db seed
-          sqlite3 ${{ github.workspace }}/prisma/test.db ".tables"
+          sqlite3 ${{ github.workspace }}/backend/prisma/test.db ".tables"
 
           echo "Tables in test.db:"
-          sqlite3 ${{ github.workspace }}/prisma/test.db ".tables"
+          sqlite3 ${{ github.workspace }}/backend/prisma/test.db ".tables"
 
       - name: Debug DATABASE_URL
         working-directory: ./backend
