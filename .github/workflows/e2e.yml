@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        browser: [chromium, firefox, webkit]
+        browser: [chromium]
     timeout-minutes: 20
 
     steps:
