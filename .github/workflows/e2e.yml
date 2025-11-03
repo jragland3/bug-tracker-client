@@ -69,15 +69,29 @@ jobs:
           DATABASE_URL: file:./prisma/test.db
           NODE_ENV: test
         run: |
-          echo "DATABASE_URL = $(pwd)/prisma/test.db"
+          echo "DATABASE_URL = $DATABASE_URL"
           bunx prisma migrate reset --force
           bunx prisma generate
-          
-          DB_PATH=$(pwd)/${DATABASE_URL#file:./}
-          if [ -f "$DB_PATH" ]; then
-            echo "✅ Database file exists at $DB_PATH"
-          else
-            echo "❌ Database file not found at $DB_PATH"
+
+          # Absolute path to DB file
+          DB_PATH="$(pwd)/prisma/test.db"
+          echo "Checking for database at: $DB_PATH"
+
+          # Wait briefly for the file to appear (in case Bun/Prisma still have it open)
+          for i in {1..5}; do
+            if [ -f "$DB_PATH" ]; then
+              echo "✅ Database file found!"
+              ls -lh "$DB_PATH"
+              break
+            else
+              echo "⏳ Database not found yet, retrying..."
+              sleep 1
+            fi
+          done
+
+          if [ ! -f "$DB_PATH" ]; then
+            echo "❌ Still no database file after waiting. Dumping prisma dir contents:"
+            ls -la prisma
           fi
 
       - name: Start backend server
