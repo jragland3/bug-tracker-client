@@ -49,7 +49,7 @@ jobs:
       - name: Prepare test database
         working-directory: ./backend
         run: |
-          export DATABASE_URL="${GITHUB_WORKSPACE}/backend/prisma/test.db"
+          export DATABASE_URL="file:${GITHUB_WORKSPACE}/backend/prisma/test.db"
           echo "DATABASE_URL = $DATABASE_URL"
           npx prisma migrate reset --force
           npx prisma db seed
