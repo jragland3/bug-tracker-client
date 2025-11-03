@@ -64,7 +64,7 @@ jobs:
         
       - name: Install browsers
         working-directory: frontend
-        run: npx playwright install --with-deps
+        run: bunx playwright install --with-deps
 
       - name: Start backend server
         working-directory: ./backend
@@ -72,14 +72,14 @@ jobs:
           DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
           NODE_ENV: test
         run: |
-          npm run start:e2e &
+          bun run start:e2e &
           BACKEND_PID=$!
           echo $BACKEND_PID > backend.pid
           sleep 5
           curl -v http://localhost:3000/health
       
       - name: Run Playwright tests
-        run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
+        run: bunx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
         env:
           DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
           NODE_ENV: test
