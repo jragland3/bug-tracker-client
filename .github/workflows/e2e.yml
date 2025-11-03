@@ -70,7 +70,8 @@ jobs:
           NODE_ENV: test
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
-          bunx prisma migrate reset --force
+          bunx prisma migrate
+
           # Strip the 'file:' prefix for sqlite3
           DB_PATH=${DATABASE_URL#file:}
           
