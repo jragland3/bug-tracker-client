@@ -54,6 +54,7 @@ jobs:
           sqlite3 $DATABASE_URL ".tables"
 
       - name: Debug DATABASE_URL
+        working-directory: ./backend
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
           ls -l $(dirname "$DATABASE_URL")
