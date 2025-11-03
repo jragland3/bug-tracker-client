@@ -47,7 +47,6 @@ jobs:
           bun-version: latest
 
       - name: Prepare test database
-        working-directory: ./backend
         run: |
           export DATABASE_URL="file:${GITHUB_WORKSPACE}/backend/prisma/test.db"
           echo "DATABASE_URL = $DATABASE_URL"
@@ -56,14 +55,12 @@ jobs:
           sqlite3 $DATABASE_URL ".tables"
 
       - name: Debug DATABASE_URL
-        working-directory: ./backend
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
           ls -l $(dirname "$DATABASE_URL")
           file "$DATABASE_URL"
 
       - name: List tables in test.db
-        working-directory: ./backend
         run: |
           sqlite3 $(realpath "$DATABASE_URL") ".tables"
 
