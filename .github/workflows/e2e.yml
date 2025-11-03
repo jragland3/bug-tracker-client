@@ -48,8 +48,11 @@ jobs:
 
       - name: Prepare test database
         working-directory: ./backend
+        env:
+          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
         run: |
-          export DATABASE_URL="file:$GITHUB_WORKSPACE/backend/prisma/test.db"
+          echo "DATABASE_URL = $DATABASE_URL"
+
           bunx prisma migrate reset --force
           sqlite3 $DATABASE_URL ".tables"
 
@@ -84,14 +87,14 @@ jobs:
           sleep 5
           curl -v http://localhost:3000/health
         env:
-          DATABASE_URL: 'file:./prisma/test.db'
+          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
           NODE_ENV: test
       
       - name: Run Playwright tests
         run: npx playwright test --project=${{ matrix.browser }}  --reporter=junit,html
         env:
+          DATABASE_URL: file:${{ github.workspace }}/backend/prisma/test.db
           NODE_ENV: test
-          DATABASE_URL: 'file:./backend/prisma/test.db'
         working-directory: ./frontend
 
       - name: Upload Playwright HTML report
