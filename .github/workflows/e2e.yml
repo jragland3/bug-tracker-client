@@ -70,8 +70,17 @@ jobs:
           NODE_ENV: test
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
-          bunx prisma migrate reset --force
-          sqlite3 ./prisma/test.db ".tables"
+          
+          # Strip the 'file:' prefix for sqlite3
+          DB_PATH=${DATABASE_URL#file:}
+          
+          # Quick indicator: does the file exist and can we list tables?
+          if [ -f "$DB_PATH" ]; then
+            echo "✅ Database file exists at $DB_PATH"
+            sqlite3 "$DB_PATH" ".tables"
+          else
+            echo "❌ Database file not found at $DB_PATH"
+          fi
 
       - name: Start backend server
         working-directory: backend
