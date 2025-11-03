@@ -70,7 +70,6 @@ jobs:
           NODE_ENV: test
         run: |
           echo "DATABASE_URL = $DATABASE_URL"
-          `bunx prisma init`
           bunx prisma migrate reset --force
           bunx prisma generate
 
