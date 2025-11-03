@@ -58,7 +58,6 @@ jobs:
         working-directory: ./backend
         run: |
           echo "Listing bugs from test database:"
-          npx prisma studio --preview
           sqlite3 prisma/test.db "SELECT id, title FROM Bug;"
 
       - name: Cache Playwright browsers
