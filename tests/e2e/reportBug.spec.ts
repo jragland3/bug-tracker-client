@@ -16,6 +16,8 @@ test.describe('Report Bug Page', () => {
 
     console.log('***** Seed bug is displayed *****')
 
+    page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
+    
     // Fill out form
     await page.fill('[data-test-id="title-field"]', bugTitle);
     await page.fill('[data-test-id="description-field"]', bugDescription);
