@@ -80,17 +80,17 @@ jobs:
           # Wait briefly for the file to appear (in case Bun/Prisma still have it open)
           for i in {1..5}; do
             if [ -f "$DB_PATH" ]; then
-              echo "✅ Database file found!"
+              echo "Database file found!"
               ls -lh "$DB_PATH"
               break
             else
-              echo "⏳ Database not found yet, retrying..."
+              echo "Database not found, retrying..."
               sleep 1
             fi
           done
 
           if [ ! -f "$DB_PATH" ]; then
-            echo "❌ Still no database file after waiting. Dumping prisma dir contents:"
+            echo "Still no database file after waiting. Dumping prisma dir contents:"
             ls -la prisma
           fi
 
@@ -137,17 +137,3 @@ jobs:
           VITE_API_URL: http://localhost:3000/v1/trpc
           NODE_ENV: test
           CI: true
-
-
-      # Reports
-      - name: Upload Playwright HTML report
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report-chromium
-          path: ./frontend/playwright-report
-
-      - name: Upload JUnit results for Github
-        uses: actions/upload-artifact@v4
-        with:
-          name: junit-results
-          path: ./frontend/results.xml
