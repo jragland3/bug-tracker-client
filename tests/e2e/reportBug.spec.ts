@@ -11,7 +11,8 @@ test.describe('Report Bug Page', () => {
     const bugTitle = `Playwright Test Bug - ${Date.now()}`;
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
 
-    page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
+    // Verify seed bug displays
+    await expect(page.locator('[data-test-id="bug-title"]', { hasText: 'Seed' })).toBeVisible()
 
     // Fill out form
     await page.fill('[data-test-id="title-field"]', bugTitle);
@@ -19,8 +20,6 @@ test.describe('Report Bug Page', () => {
 
     // Submit form
     await page.click('[data-test-id="submit-bug-button"]');
-
-    console.log(await page.content());
 
     // Verify that the bug appears in the list
     await expect(page.locator('[data-test-id="bug-title"]', { hasText: bugTitle })).toBeVisible();

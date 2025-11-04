@@ -158,3 +158,4 @@ jobs:
           name: Playwright E2E
           path: ./frontend/results.xml
           reporter: junit
+          files: ''
