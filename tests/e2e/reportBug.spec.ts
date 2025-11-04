@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { selector } from '../selectors';
 
 
 test.describe('Report Bug Page', () => {
@@ -11,16 +12,16 @@ test.describe('Report Bug Page', () => {
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
 
     // Verify seed bug displays
-    await expect(page.locator('[data-test-id="bug-title"]', { hasText: 'Seed Bug' })).toBeVisible();
+    await expect(page.locator(selector.bug.title, { hasText: 'Seed Bug' })).toBeVisible();
 
     // Fill out form
-    await page.fill('[data-test-id="title-field"]', bugTitle);
-    await page.fill('[data-test-id="description-field"]', bugDescription);
+    await page.fill(selector.bugForm.titleField, bugTitle);
+    await page.fill(selector.bugForm.descriptionField, bugDescription);
 
     // Submit form
-    await page.click('[data-test-id="submit-bug-button"]');
+    await page.click(selector.bugForm.submitButton);
 
     // Verify that the bug appears in the list
-    await expect(page.locator('[data-test-id="bug-title"]', { hasText: bugTitle })).toBeVisible();
+    await expect(page.locator(selector.bug.title, { hasText: bugTitle })).toBeVisible();
   });
 });
