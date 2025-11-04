@@ -48,9 +48,9 @@ export default defineConfig({
       port: 5173,
       reuseExistingServer: !process.env.CI,
       env: {
+        ...process.env,
         VITE_API_URL: process.env.VITE_API_URL || 'http://localhost:3000/v1/trpc',
         DATABASE_URL: process.env.DATABASE_URL || 'file:./test.db',
-        ...process.env,
       },
     }
   ] 
