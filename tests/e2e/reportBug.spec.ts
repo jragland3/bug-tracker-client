@@ -11,7 +11,6 @@ test.describe('Report Bug Page', () => {
     const bugTitle = `Playwright Test Bug - ${Date.now()}`;
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
 
-    // Verify seed bug displays
     page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
 
     // Fill out form

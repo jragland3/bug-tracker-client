@@ -17,15 +17,9 @@ const ReportBugPage: React.FC = () => {
   // Fetch all bugs from the backend API
   const fetchBugs = async() => {
     try {
-      if (import.meta.env.VITE_API_URL) {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/bugs.getBugs`);
-        const data = await res.json();
-        setBugs(data?.result?.data ?? []); // Update state with fetched bugs
-      } else if (process.env.VITE_API_URL) {
-        const res = await fetch(`${process.env.VITE_API_URL}/bugs.getBugs`);
-        const data = await res.json();
-        setBugs(data?.result?.data ?? []); // Update state with fetched bugs
-      }
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/bugs.getBugs`);
+      const data = await res.json();
+      setBugs(data?.result?.data ?? []); // Update state with fetched bugs
     } catch (err) {
       console.error('Failed to fetch bugs:', err);
     }
