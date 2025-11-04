@@ -151,11 +151,3 @@ jobs:
         with:
           name: junit-results
           path: ./frontend/results.xml
-
-      - name: Publish test results to Github
-        uses: dorny/test-reporter@v2
-        with:
-          name: Playwright E2E
-          path: ./frontend/results.xml
-          reporter: junit
-          files: ''
