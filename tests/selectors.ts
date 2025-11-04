@@ -1,7 +1,7 @@
 export const selector = {
   bug: {
     description: '[data-test-id="bug-description"]',
-    deleteButton: '[data-test-id="delete-button"]',
+    deleteButton: '[data-test-id="delete-bug-button"]',
     title: '[data-test-id="bug-title"]',
   },
   bugForm: {
