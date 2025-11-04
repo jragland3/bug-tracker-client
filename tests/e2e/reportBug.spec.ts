@@ -7,7 +7,6 @@ test.describe('Report Bug Page', () => {
   });
 
   test('should submit a new bug successfully', async({ page }) => {
-    console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
     console.log('VITE_API_URL:', process.env.VITE_API_URL);
     const bugTitle = `Playwright Test Bug - ${Date.now()}`;
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
