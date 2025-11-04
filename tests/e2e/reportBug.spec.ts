@@ -7,7 +7,6 @@ test.describe('Report Bug Page', () => {
   });
 
   test('should submit a new bug successfully', async({ page }) => {
-    console.log('VITE_API_URL:', process.env.VITE_API_URL);
     const bugTitle = `Playwright Test Bug - ${Date.now()}`;
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
 
@@ -17,8 +16,6 @@ test.describe('Report Bug Page', () => {
 
     // Submit form
     await page.click('[data-test-id="submit-bug-button"]');
-
-    console.log(await page.content());
 
     // Verify that the bug appears in the list
     await expect(page.locator('[data-test-id="bug-title"]', { hasText: bugTitle })).toBeVisible();

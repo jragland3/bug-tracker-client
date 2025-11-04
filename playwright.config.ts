@@ -49,7 +49,8 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
       env: {
         VITE_API_URL: 'http://localhost:3000/v1/trpc',
-        DATABASE_URL: 'file:./test.db' 
+        DATABASE_URL: 'file:./test.db',
+        ...process.env,
       },
     }
   ] 
