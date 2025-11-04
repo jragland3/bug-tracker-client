@@ -73,27 +73,6 @@ jobs:
           bunx prisma migrate reset --force
           bunx prisma generate
 
-          # Absolute path to DB file
-          DB_PATH="$(pwd)/prisma/test.db"
-          echo "Checking for database at: $DB_PATH"
-
-          # Wait briefly for the file to appear (in case Bun/Prisma still have it open)
-          for i in {1..5}; do
-            if [ -f "$DB_PATH" ]; then
-              echo "Database file found!"
-              ls -lh "$DB_PATH"
-              break
-            else
-              echo "Database not found, retrying..."
-              sleep 1
-            fi
-          done
-
-          if [ ! -f "$DB_PATH" ]; then
-            echo "Still no database file after waiting. Dumping prisma dir contents:"
-            ls -la prisma
-          fi
-
       - name: Start backend server
         working-directory: backend
         env:
@@ -106,7 +85,6 @@ jobs:
           echo $BACKEND_PID > backend.pid
           for i in {1..10}; do
             if curl -s -f http://localhost:3000/health; then
-              echo "Backend ready"
               break
             else
               echo "Waiting for backend..."
