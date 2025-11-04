@@ -12,7 +12,7 @@ test.describe('Report Bug Page', () => {
     const bugDescription = `This bug was created by an E2E test. - ${Date.now()}`;
 
     // Verify seed bug displays
-    await expect(page.locator('[data-test-id="bug-title"]', { hasText: 'Seed' })).toBeVisible()
+    await expect(page.locator('[data-test-id="bug-title"]', { hasText: 'Seed' })).toBeVisible();
 
     // Fill out form
     await page.fill('[data-test-id="title-field"]', bugTitle);
