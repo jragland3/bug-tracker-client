@@ -1,5 +1,6 @@
 export const selector = {
   bug: {
+    container: '[data-test-id="bug"]',
     description: '[data-test-id="bug-description"]',
     deleteButton: '[data-test-id="delete-bug-button"]',
     title: '[data-test-id="bug-title"]',

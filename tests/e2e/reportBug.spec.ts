@@ -8,7 +8,6 @@ test.describe('Report Bug Page', () => {
 
     // Verify seed bug displays
     await expect(page.locator(selector.bug.title, { hasText: 'Seed Bug' })).toBeVisible();
-
   });
 
   test('should submit a new bug successfully', async({ page }) => {
@@ -27,11 +26,9 @@ test.describe('Report Bug Page', () => {
   });
 
   test('should delete a bug successfully', async({ page }) => {
-    const seedBug = page.locator(selector.bug.title, { hasText: 'Seed Bug' }).locator('..');
-    const seedBugDeleteButton = seedBug.locator(selector.bug.deleteButton);
+    const seedBugDeleteButton = page.locator(selector.bug.container, { hasText: 'Seed Bug' }).locator(selector.bug.deleteButton);
 
     await seedBugDeleteButton.click();
-    await expect(seedBug.locator(selector.bug.title, { hasText: 'Seed Bug' })).toHaveCount(0);
-
+    await expect(page.locator(selector.bug.container, { hasText: 'Seed Bug' })).toHaveCount(0);
   });
 });

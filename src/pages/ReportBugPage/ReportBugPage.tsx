@@ -77,7 +77,7 @@ const ReportBugPage: React.FC = () => {
       <h2>Reported Bugs</h2>
       <ul>
         {bugs.map((bug) => (
-          <li key={bug.id}>
+          <li data-test-id='bug' key={bug.id}>
             <strong data-test-id='bug-title'>{bug.title}</strong> - {bug.status}
             <p data-test-id='bug-description'>{bug.description}</p>
             <button data-test-id='delete-bug-button' onClick={() => handleDelete(bug.id)}>Delete</button>
