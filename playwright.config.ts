@@ -44,9 +44,10 @@ export default defineConfig({
 
   webServer: [
     {
-      command: 'bun run dev', // Frontend start script
+      command: 'bun run dev -- --host 0.0.0.0', // Frontend start script
       port: 5173,
       reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
       env: {
         ...process.env,
         VITE_API_URL: process.env.VITE_API_URL ?? 'http://localhost:3000/v1/trpc',
