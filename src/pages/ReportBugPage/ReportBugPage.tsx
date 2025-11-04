@@ -80,7 +80,7 @@ const ReportBugPage: React.FC = () => {
           <li key={bug.id}>
             <strong data-test-id='bug-title'>{bug.title}</strong> - {bug.status}
             <p data-test-id='bug-description'>{bug.description}</p>
-            <button onClick={() => handleDelete(bug.id)}>Delete</button>
+            <button data-test-id='delete-bug-button' onClick={() => handleDelete(bug.id)}>Delete</button>
           </li>
         ))}
       </ul>
