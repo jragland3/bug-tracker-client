@@ -71,6 +71,12 @@ You can also run it directly:
 
 Only rules that support autofix will be corrected automatically.
 
+### Playwright tests
+- To run Playwright tests:
+`npx playwright test`
+- with debug stepper:
+`npx playwright test --debug`
+
 ### Notes
 - ESLint's flat config does not support some legacy CLI flags such as --ext. File patterns should be defined in the config file.
 - Some issues like unused variables cannot be auto-fixed and must be resolved manually.

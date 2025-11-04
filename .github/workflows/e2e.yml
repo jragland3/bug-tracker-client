@@ -1,0 +1,117 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: file:../prisma/test.db
+      VITE_API_URL: http://localhost:3000/v1/trpc
+      APP_URL: http://localhost:5173
+      CI: true
+
+    steps:
+      - name: Checkout Frontend Repository
+        uses: actions/checkout@v4
+        with:
+          path: frontend
+
+      - name: Checkout Backend Repository
+        uses: actions/checkout@v4
+        with:
+          repository: jragland3/bug-tracker-backend
+          path: backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache Bun Depencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun
+          key: ${{ runner.os }}-bun=${{hashFiles('frontend/bun.lock', 'backend/bun.lock') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright
+        
+      - name: Install browsers
+        working-directory: frontend
+        run: bunx playwright install --with-deps
+
+
+      # Backend Setup
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: bun install
+
+      - name: Prepare Prisma Database
+        working-directory: backend
+        env:
+          DATABASE_URL: file:../prisma/test.db
+          NODE_ENV: test
+        run: |
+          echo "DATABASE_URL = $DATABASE_URL"
+          bunx prisma migrate reset --force
+          bunx prisma generate
+
+      - name: Start backend server
+        working-directory: backend
+        env:
+          DATABASE_URL: file:../prisma/test.db
+          NODE_ENV: test
+          FRONTEND_ORIGIN: http://localhost:5173
+        run: |
+          bun run start:e2e &
+          BACKEND_PID=$!
+          echo $BACKEND_PID > backend.pid
+          for i in {1..10}; do
+            if curl -s -f http://localhost:3000/health; then
+              break
+            else
+              echo "Waiting for backend..."
+              sleep 2
+            fi
+          done
+
+      - name: Verify backend API
+        working-directory: backend
+        env:
+          DATABASE_URL: file:../prisma/test.db
+          NODE_ENV: test
+        run: curl http://localhost:3000/v1/trpc/bugs.getBugs
+
+
+      # Frontend Setup
+      - name: Install Frontend Dependencies 
+        working-directory: frontend
+        run: bun install
+
+
+      # Playwright Tests
+      - name: Run Playwright tests
+        working-directory: frontend
+        run: bunx playwright test --reporter=junit,html
+        env:
+          APP_URL: http://localhost:5173
+          VITE_API_URL: http://localhost:3000/v1/trpc
+          NODE_ENV: test
+          CI: true
