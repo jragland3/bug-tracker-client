@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 import { selector } from '../selectors';
 
 
+const VITE_API_URL = 'http://localhost:3000/v1/trpc';
+
+
 test.describe('Report Bug Page', () => {
   test.beforeEach(async({ page }) => {
     await page.goto('/report-bug');
@@ -25,10 +28,21 @@ test.describe('Report Bug Page', () => {
     await expect(page.locator(selector.bug.title, { hasText: bugTitle })).toBeVisible();
   });
 
-  test('should delete a bug successfully', async({ page }) => {
-    const seedBugDeleteButton = page.locator(selector.bug.container, { hasText: 'Seed Bug' }).locator(selector.bug.deleteButton);
+  test('should delete a bug successfully', async({ page, request }) => {
+    // Create a bug to delete
+    await request.post(`${VITE_API_URL}/bugs.createBug`, {
+      headers: { 'Content-Type': 'application/json' },
+      data: { 
+        title: 'Bug To Delete',
+        description: '...',
+        status: 'open',
+      },
+    });
+    await page.reload();
+
+    const seedBugDeleteButton = page.locator(selector.bug.container, { hasText: 'Bug To Delete' }).locator(selector.bug.deleteButton);
 
     await seedBugDeleteButton.click();
-    await expect(page.locator(selector.bug.container, { hasText: 'Seed Bug' })).toHaveCount(0);
+    await expect(page.locator(selector.bug.container, { hasText: 'Bug To Delete' })).toHaveCount(0);
   });
 });
